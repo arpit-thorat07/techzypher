@@ -88,35 +88,58 @@ WORKER_OUTPUTS_DIR = Path(os.environ.get("WORKER_OUTPUTS_DIR", str(PROJECT_ROOT 
 WORKER_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# 4. Strict Non-Blocking GPU Concurrency Lock
+# 4. Strict Non-Blocking, Thread-Aware GPU Concurrency Lock
 class GPULock:
     """
-    Atomic non-blocking GPU concurrency lock.
-    Eliminates check-then-acquire race conditions.
-    Any second simultaneous request is immediately rejected with HTTP 503
-    without waiting or queuing for GPU resources.
+    Atomic, thread-safe, non-blocking GPU concurrency lock.
+    Guarantees:
+    1. Single active GPU inference task at a time.
+    2. Atomic acquisition preventing check-then-acquire race conditions.
+    3. Rejection of concurrent requests with HTTP 503 without waiting or blocking event loop.
+    4. If an async caller times out via asyncio.wait_for(), the GPU remains marked busy
+       (is_busy=True) and blocks any new request from starting until the underlying
+       inference thread in the ThreadPoolExecutor completely finishes.
+    5. Always releases lock state in finally blocks under all conditions:
+       success, exception, or timeout.
     """
     def __init__(self) -> None:
-        self._locked = False
         self._sync_lock = threading.Lock()
+        self._active_request = False
+        self._active_thread_count = 0
 
     def try_acquire(self) -> bool:
-        """Atomically test and set lock state."""
+        """Atomically test and set lock state. Fails if a request is active or thread is executing."""
         with self._sync_lock:
-            if self._locked:
+            if self._active_request or self._active_thread_count > 0:
                 return False
-            self._locked = True
+            self._active_request = True
             return True
 
-    def release(self) -> None:
-        """Release the lock state."""
+    def mark_thread_start(self) -> None:
+        """Called inside the inference thread when execution begins."""
         with self._sync_lock:
-            self._locked = False
+            self._active_thread_count += 1
+
+    def mark_thread_end(self) -> None:
+        """Called inside the inference thread's finally block when execution finishes."""
+        with self._sync_lock:
+            if self._active_thread_count > 0:
+                self._active_thread_count -= 1
+
+    def release_request(self) -> None:
+        """Called in the request's finally block when the HTTP handler finishes."""
+        with self._sync_lock:
+            self._active_request = False
+
+    def release(self) -> None:
+        """Alias for release_request to release request-level lock state."""
+        self.release_request()
 
     @property
     def is_locked(self) -> bool:
+        """Returns True if a request is active OR a worker thread is running on the GPU."""
         with self._sync_lock:
-            return self._locked
+            return self._active_request or (self._active_thread_count > 0)
 
     @contextlib.asynccontextmanager
     async def acquire_or_503(self):
@@ -130,7 +153,7 @@ class GPULock:
         try:
             yield
         finally:
-            self.release()
+            self.release_request()
 
 
 gpu_lock = GPULock()
@@ -278,7 +301,7 @@ async def generate_model(
     1. Authenticate worker token.
     2. Atomically acquire single-request GPU lock (HTTP 503 if busy).
     3. Validate input format, dimensions, size, and mode.
-    4. Run ML pipeline with configurable timeout.
+    4. Run ML pipeline in background thread with thread-aware GPU tracking.
     5. Validate generated GLB with trimesh.
     6. Return binary GLB model.
     """
@@ -364,24 +387,32 @@ async def generate_model(
         finally:
             await file.close()
 
-        # 5. Invoke notebook-tested ML pipeline with configurable timeout
+        # 5. Invoke notebook-tested ML pipeline with thread tracking & configurable timeout
+        clean_prompt = (prompt or "").strip()
+
+        if clean_mode == "upload":
+            logger.info(f"[{job_id}] Running image-conditioned 3D pipeline...")
+            target_fn = generate_3d_from_image
+        else:
+            logger.info(f"[{job_id}] Running sketch ControlNet 3D pipeline...")
+            target_fn = generate_3d
+
+        # Thread-level lifecycle tracking ensuring GPU remains locked if caller times out
+        abandoned_event = threading.Event()
+
+        def run_pipeline_in_thread() -> str:
+            gpu_lock.mark_thread_start()
+            try:
+                return target_fn(str(input_path), clean_prompt, str(job_dir))
+            finally:
+                gpu_lock.mark_thread_end()
+                if abandoned_event.is_set():
+                    logger.info(f"[{job_id}] Abandoned background thread finished. Cleaning up {job_dir}.")
+                    shutil.rmtree(job_dir, ignore_errors=True)
+
         try:
-            clean_prompt = (prompt or "").strip()
-
-            if clean_mode == "upload":
-                logger.info(f"[{job_id}] Running image-conditioned 3D pipeline...")
-                target_fn = generate_3d_from_image
-            else:
-                logger.info(f"[{job_id}] Running sketch ControlNet 3D pipeline...")
-                target_fn = generate_3d
-
             model_path = await asyncio.wait_for(
-                asyncio.to_thread(
-                    target_fn,
-                    str(input_path),
-                    clean_prompt,
-                    str(job_dir),
-                ),
+                asyncio.to_thread(run_pipeline_in_thread),
                 timeout=WORKER_TIMEOUT_SECONDS,
             )
 
@@ -399,8 +430,11 @@ async def generate_model(
             )
 
         except asyncio.TimeoutError:
-            shutil.rmtree(job_dir, ignore_errors=True)
-            logger.error(f"[{job_id}] Inference timed out after {WORKER_TIMEOUT_SECONDS} seconds")
+            abandoned_event.set()
+            logger.error(
+                f"[{job_id}] Inference timed out after {WORKER_TIMEOUT_SECONDS}s. "
+                "GPU lock will remain held until the background thread terminates."
+            )
             raise HTTPException(
                 status_code=status.HTTP_504_GATEWAY_TIMEOUT,
                 detail=f"Inference timed out after {WORKER_TIMEOUT_SECONDS:.0f} seconds.",
