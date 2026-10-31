@@ -74,6 +74,14 @@ async def generate_model(
                 detail="Malformed JSON body.",
             )
 
+    # Validate mode strictly
+    clean_mode = (mode or "draw").strip().lower()
+    if clean_mode not in {"draw", "upload"}:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported mode '{mode}'. Mode must be either 'draw' or 'upload'.",
+        )
+
     # Process either uploaded binary file or canvas base64 image
     saved_path = None
     metadata = {}

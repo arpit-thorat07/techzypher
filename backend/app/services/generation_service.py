@@ -120,22 +120,34 @@ class GenerationService:
             return False
 
         try:
-            scene = trimesh.load(str(model_path), force="scene")
-            if not scene.geometry:
-                logger.warning(f"GLB scene in {model_path} contains no geometry.")
+            loaded = trimesh.load(str(model_path), file_type="glb", force="scene")
+            if isinstance(loaded, trimesh.Scene):
+                if not loaded.geometry:
+                    logger.warning(f"GLB scene in {model_path} contains no geometry.")
+                    return False
+                total_vertices = sum(len(m.vertices) for m in loaded.geometry.values() if hasattr(m, "vertices"))
+                total_faces = sum(len(m.faces) for m in loaded.geometry.values() if hasattr(m, "faces"))
+                bounds = loaded.bounds
+                extents = loaded.extents
+            elif isinstance(loaded, trimesh.Trimesh):
+                total_vertices = len(loaded.vertices)
+                total_faces = len(loaded.faces)
+                bounds = loaded.bounds
+                extents = loaded.extents
+            else:
+                logger.warning(f"Unexpected trimesh load result type: {type(loaded)}")
                 return False
 
-            for mesh in scene.geometry.values():
-                if len(mesh.vertices) == 0 or len(mesh.faces) == 0:
-                    logger.warning(f"GLB in {model_path} contains empty mesh components.")
-                    return False
+            if total_vertices == 0 or total_faces == 0:
+                logger.warning(f"GLB in {model_path} contains empty geometry ({total_vertices} verts, {total_faces} faces).")
+                return False
 
-            if scene.bounds is None or not np.isfinite(scene.bounds).all():
+            if bounds is None or not np.all(np.isfinite(bounds)):
                 logger.warning(f"GLB in {model_path} has non-finite bounds.")
                 return False
 
-            if not np.all(scene.extents > 0):
-                logger.warning(f"GLB in {model_path} has non-positive extents.")
+            if extents is None or not np.all(extents > 1e-6):
+                logger.warning(f"GLB in {model_path} has non-positive extents: {extents}.")
                 return False
 
             return True
@@ -187,8 +199,8 @@ class GenerationService:
 
         except Exception as err:
             logger.error(f"[{job_id}] Remote inference job failed: {err}")
-            # Ensure corrupted output is removed if invalid
-            if target_output_glb.exists() and not self.validate_glb(target_output_glb):
+            # Ensure failed job never leaves invalid or partial GLB files behind
+            if target_output_glb.exists():
                 try:
                     target_output_glb.unlink()
                 except Exception:

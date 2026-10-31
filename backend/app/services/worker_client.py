@@ -174,3 +174,4 @@ class MLWorkerClient:
 
 # Default worker client instance
 worker_client = MLWorkerClient()
+
