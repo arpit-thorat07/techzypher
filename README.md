@@ -1,14 +1,16 @@
 # Sketch2Shape AI
 
-Sketch-to-3D prototype developed for TechZephyr 4.0. Upload a line sketch and provide a prompt; the ML pipeline produces a GLB asset.
+Sketch-to-3D prototype developed for TechZephyr 4.0. Supports line sketches or colored images with an optional descriptive text prompt; the ML pipeline produces a GLB asset.
 
 ## Pipeline
 
 1. `ml.preprocessing.preprocess_sketch`: crops and centers dark strokes in a 512×512 ControlNet scribble (white on black).
 2. `ml.image_generation.generate_image`: Stable Diffusion v1.5 + ControlNet Scribble, deterministic seed 42.
-3. `ml.reconstruction.reconstruct_3d`: TripoSR single-image 3D reconstruction.
-4. `ml.mesh_utils.validate_and_export`: verifies mesh bounds, repairs negative signed volume where possible, exports GLB.
-5. `ml.pipeline.generate_3d(sketch_path, prompt, output_dir)`: runs the pipeline sequentially in separate inference processes.
+3. `ml.image_conditioning.condition_image`: optional Stable Diffusion img2img conditioning for colored-image + prompt input. This can alter the input appearance; the prompt does not act directly on TripoSR.
+4. `ml.reconstruction.reconstruct_3d`: TripoSR single-image 3D reconstruction.
+5. `ml.mesh_utils.validate_and_export`: verifies mesh bounds, repairs negative signed volume where possible, and exports GLB with an explicit white-base PBR material for vertex-colored meshes.
+6. `ml.pipeline.generate_3d(sketch_path, prompt, output_dir)`: sketch + prompt workflow.
+7. `ml.pipeline.generate_3d_from_image(image_path, prompt, output_dir)`: colored image + prompt workflow.
 
 The code currently expects Google Colab paths (`/content/controlnet-env`, `/content/triposr-env`, `/content/TripoSR`). It is **not** a ready-to-run local inference service on a 4 GB GPU. FastAPI deployment requires a GPU worker or equivalent hosting.
 
@@ -45,11 +47,24 @@ path = generate_3d(
 print(path)
 ```
 
-The returned path points to a job-specific `model.glb`. It also saves `control.png` and `generated.png` in that job folder.
+For a colored input image with prompt guidance:
+
+```python
+from ml.pipeline import generate_3d_from_image
+
+path = generate_3d_from_image(
+    "/content/controller.png",
+    "a pink gaming controller with purple buttons, rounded ergonomic body, studio lighting",
+    "/content/outputs",
+)
+print(path)
+```
+
+The returned path points to a job-specific `model.glb`. The sketch workflow saves `control.png` and `generated.png`; the colored-image workflow saves `conditioned.png`.
 
 ## Test observations and limitations
 
-A chair, stool, mug, and desk lamp were used during manual tests. GLB creation was successful, but successful mesh export is **not** proof of correct 3D reconstruction. Notably, the mug's hollow interior and lamp shade depth were not consistently preserved. TripoSR infers unseen geometry from one image, and prompts alone may not solve cavities and thin parts. Review each model in a 3D viewer.
+A chair, stool, mug, and desk lamp were used during manual tests. GLB creation was successful, but successful mesh export is **not** proof of correct 3D reconstruction. Notably, the mug's hollow interior and lamp shade depth were not consistently preserved. TripoSR infers unseen geometry from one image, and prompts alone may not solve cavities and thin parts. Review each model in a 3D viewer. The exported GLB carries vertex colors (COLOR_0) with a supporting material, not a UV-baked texture image; some viewers may require material-preview mode. Prompt-guided img2img can change colors or proportions, and does not guarantee preservation of hidden geometry.
 
 ## Model attribution
 

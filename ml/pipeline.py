@@ -42,3 +42,33 @@ def generate_3d(sketch_path, prompt, output_dir="outputs"):
 
     validate_and_export(raw_model, model_path)
     return str(model_path)
+
+
+def generate_3d_from_image(image_path, prompt, output_dir="outputs"):
+    job_id = uuid.uuid4().hex[:10]
+    job_dir = Path(output_dir).resolve() / job_id
+    job_dir.mkdir(parents=True, exist_ok=True)
+
+    conditioned_path = job_dir / "conditioned.png"
+    model_path = job_dir / "model.glb"
+
+    subprocess.run([
+        CONTROLNET_PYTHON,
+        "-c",
+        (
+            "import sys; "
+            "from ml.image_conditioning import condition_image; "
+            "condition_image(*sys.argv[1:4])"
+        ),
+        str(image_path),
+        prompt,
+        str(conditioned_path)
+    ], cwd=str(PROJECT_ROOT), check=True)
+
+    raw_model = reconstruct_3d(
+        str(conditioned_path),
+        str(job_dir / "reconstruction")
+    )
+
+    validate_and_export(raw_model, model_path)
+    return str(model_path)
