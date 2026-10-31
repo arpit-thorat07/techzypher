@@ -41,10 +41,10 @@ router = APIRouter(prefix="", tags=["3D Generation"])
 )
 async def generate_model(
     request: Request,
-    file: Optional[UploadFile] = File(None, description="Uploaded PNG, JPG, or WebP image"),
-    image: Optional[str] = Form(None, description="Base64 data URL from sketch canvas"),
-    prompt: Optional[str] = Form("", description="Optional text prompt for style/materials"),
-    mode: Optional[str] = Form("draw", description="Input mode: 'draw' or 'upload'"),
+    file: UploadFile | None = File(None, description="Uploaded PNG, JPG, or WebP image"),
+    image: str | None = Form(None, description="Base64 data URL from sketch canvas"),
+    prompt: str | None = Form("", description="Optional text prompt for style/materials"),
+    mode: str | None = Form("draw", description="Input mode: 'draw' or 'upload'"),
 ) -> GenerateResponse:
     """
     1. POST /api/generate
