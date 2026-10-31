@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     # Remote ML Worker Configuration (Google Colab GPU Worker)
     ML_WORKER_URL: Optional[str] = None
     ML_WORKER_TOKEN: Optional[str] = None
-    ML_WORKER_TIMEOUT_SECONDS: float = 300.0  # 5 minutes inference timeout
+    ML_WORKER_TIMEOUT_SECONDS: float = 900.0  # 15 minutes timeout (matches Colab worker launcher)
 
     # CORS configuration
     CORS_ORIGINS: List[str] = [
