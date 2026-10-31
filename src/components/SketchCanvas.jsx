@@ -423,34 +423,34 @@ export default function SketchCanvas({ onSketchChange }) {
   return (
     <div className="flex flex-col gap-2">
       {/* Canvas Toolbar */}
-      <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-surface-container-low border border-surface-container-high/60">
-        <div className="flex items-center gap-1">
+      <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 px-2.5 py-1.5 rounded-lg bg-surface-container-low border border-surface-container-high/60">
+        <div className="flex items-center gap-1 shrink-0">
           {/* Brush Tool */}
           <button
             type="button"
             onClick={() => setTool('brush')}
-            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all cursor-pointer ${
+            className={`h-7 w-7 rounded-md flex items-center justify-center transition-all cursor-pointer ${
               tool === 'brush'
                 ? 'bg-white text-primary shadow-xs ring-1 ring-primary/20 font-bold'
                 : 'text-on-surface-variant hover:bg-white/80'
             }`}
             title="Brush Tool"
           >
-            <Paintbrush className="w-4 h-4" />
+            <Paintbrush className="w-3.5 h-3.5" />
           </button>
 
           {/* Eraser Tool */}
           <button
             type="button"
             onClick={() => setTool('eraser')}
-            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all cursor-pointer ${
+            className={`h-7 w-7 rounded-md flex items-center justify-center transition-all cursor-pointer ${
               tool === 'eraser'
                 ? 'bg-white text-primary shadow-xs ring-1 ring-primary/20 font-bold'
                 : 'text-on-surface-variant hover:bg-white/80'
             }`}
             title="Eraser Tool"
           >
-            <Eraser className="w-4 h-4" />
+            <Eraser className="w-3.5 h-3.5" />
           </button>
 
           <div className="w-px h-4 bg-surface-container-high mx-0.5" />
@@ -460,7 +460,7 @@ export default function SketchCanvas({ onSketchChange }) {
             type="button"
             onClick={handleUndo}
             disabled={historyStep <= 0}
-            className="w-7 h-7 rounded-md text-on-surface-variant hover:bg-white/80 flex items-center justify-center transition-colors disabled:opacity-40 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
+            className="h-7 w-7 rounded-md text-on-surface-variant hover:bg-white/80 flex items-center justify-center transition-colors disabled:opacity-40 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
             title="Undo"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -471,22 +471,22 @@ export default function SketchCanvas({ onSketchChange }) {
             type="button"
             onClick={handleRedo}
             disabled={historyStep >= historyLength - 1}
-            className="w-7 h-7 rounded-md text-on-surface-variant hover:bg-white/80 flex items-center justify-center transition-colors disabled:opacity-40 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
+            className="h-7 w-7 rounded-md text-on-surface-variant hover:bg-white/80 flex items-center justify-center transition-colors disabled:opacity-40 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
             title="Redo"
           >
             <RotateCw className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Export PNG */}
           <button
             type="button"
             onClick={handleExportPNG}
-            className="flex items-center gap-1 px-2 py-1 text-on-surface-variant hover:text-primary hover:bg-white/80 text-[11px] font-medium rounded transition-colors cursor-pointer"
+            className="h-7 flex items-center gap-1.5 px-2 text-on-surface-variant hover:text-primary hover:bg-white/80 text-[11px] font-medium rounded-md transition-colors cursor-pointer shrink-0"
             title="Export sketch as PNG image"
           >
-            <Download className="w-3 h-3" />
+            <Download className="w-3.5 h-3.5" />
             <span>Export</span>
           </button>
 
@@ -494,10 +494,10 @@ export default function SketchCanvas({ onSketchChange }) {
           <button
             type="button"
             onClick={handleResetPreset}
-            className="flex items-center gap-1 px-2 py-1 text-primary hover:bg-white/80 text-[11px] font-medium rounded transition-colors cursor-pointer"
+            className="h-7 flex items-center gap-1.5 px-2 text-primary hover:bg-white/80 text-[11px] font-medium rounded-md transition-colors cursor-pointer shrink-0"
             title="Draw Concept Sketch Preset"
           >
-            <Sparkles className="w-3 h-3" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Preset</span>
           </button>
 
@@ -505,10 +505,10 @@ export default function SketchCanvas({ onSketchChange }) {
           <button
             type="button"
             onClick={handleClear}
-            className="flex items-center gap-1 px-2 py-1 text-on-surface-variant hover:text-red-600 hover:bg-red-50 text-[11px] font-medium rounded transition-colors cursor-pointer"
+            className="h-7 flex items-center gap-1.5 px-2 text-on-surface-variant hover:text-red-600 hover:bg-red-50 text-[11px] font-medium rounded-md transition-colors cursor-pointer shrink-0"
             title="Clear Canvas"
           >
-            <Trash2 className="w-3 h-3" />
+            <Trash2 className="w-3.5 h-3.5" />
             <span>Clear</span>
           </button>
         </div>
