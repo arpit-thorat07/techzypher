@@ -3,7 +3,14 @@ venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.pytest_cache/
 .env
 outputs/
+worker-test-result/
 *.ckpt
 *.safetensors
+*.glb
+*.obj
+ml_worker_connection.json
+ml_worker.log
+ml_tunnel.log

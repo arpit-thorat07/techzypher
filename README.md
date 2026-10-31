@@ -1,76 +1,72 @@
 # Sketch2Shape AI
 
-Sketch-to-3D prototype developed for TechZephyr 4.0. Supports line sketches or colored images with an optional descriptive text prompt; the ML pipeline produces a GLB asset.
+TechZephyr 4.0 sketch / colored-image to GLB prototype.
 
-## Pipeline
+## ML pipelines
 
-1. `ml.preprocessing.preprocess_sketch`: crops and centers dark strokes in a 512×512 ControlNet scribble (white on black).
-2. `ml.image_generation.generate_image`: Stable Diffusion v1.5 + ControlNet Scribble, deterministic seed 42.
-3. `ml.image_conditioning.condition_image`: optional Stable Diffusion img2img conditioning for colored-image + prompt input. This can alter the input appearance; the prompt does not act directly on TripoSR.
-4. `ml.reconstruction.reconstruct_3d`: TripoSR single-image 3D reconstruction.
-5. `ml.mesh_utils.validate_and_export`: verifies mesh bounds, repairs negative signed volume where possible, and exports GLB with an explicit white-base PBR material for vertex-colored meshes.
-6. `ml.pipeline.generate_3d(sketch_path, prompt, output_dir)`: sketch + prompt workflow.
-7. `ml.pipeline.generate_3d_from_image(image_path, prompt, output_dir)`: colored image + prompt workflow.
+- `ml.pipeline.generate_3d(sketch_path, prompt, output_dir)`: sketch preprocessing → SD 1.5 + ControlNet Scribble → TripoSR → GLB.
+- `ml.pipeline.generate_3d_from_image(image_path, prompt, output_dir)`: colored image → SD 1.5 img2img prompt conditioning → TripoSR → GLB.
 
-The code currently expects Google Colab paths (`/content/controlnet-env`, `/content/triposr-env`, `/content/TripoSR`). It is **not** a ready-to-run local inference service on a 4 GB GPU. FastAPI deployment requires a GPU worker or equivalent hosting.
+Both return a job-specific `model.glb`. Sketch mode also saves `control.png` and `generated.png`; colored-image mode saves `conditioned.png`. The prompt affects **image generation**, not TripoSR geometry directly.
 
-## Requirements
+**The ML models require GPU inference in Google Colab. Do not run them on the local 4 GB laptop GPU.**
 
-Use Colab with a T4 GPU and two isolated Python 3.10 environments. The notebook/orchestrator Python also requires `numpy`, `Pillow`, and `trimesh`.
+## One-notebook Colab setup and worker launch
 
-**ControlNet environment:**
-- torch 2.1.2 + torchvision 0.16.2 (CUDA 12.1 wheels)
-- numpy 1.26.4, Pillow 10.2.0
-- diffusers 0.27.2, transformers 4.38.2, accelerate 0.29.3, huggingface-hub 0.25.2, safetensors
+Open [notebooks/worker_colab.ipynb](notebooks/worker_colab.ipynb) in Google Colab, choose **T4 GPU**, then run all its cells. The notebook clones this branch, runs `setup/setup_colab.sh`, and launches the GPU worker via `scripts/start_worker_colab.py`.
 
-**TripoSR environment:**
-- Official [TripoSR repository](https://github.com/VAST-AI-Research/TripoSR), Python 3.10
-- torch 2.1.2 + torchvision 0.16.2 (CUDA 12.1 wheels)
-- TripoSR's requirements excluding `gradio` and `torchmcubes`
-- huggingface-hub 0.17.3, numpy 1.26.4, scikit-image 0.22.0, onnxruntime 1.19.2
-- Colab CUDA extension build failed for `torchmcubes`; testing used a `skimage.measure.marching_cubes` fallback patched into `tsr/models/isosurface.py` in the TripoSR checkout. This patch is not included in this repository because TripoSR remains an external dependency.
-
-Inference may download pretrained model weights on the first run. Model files are not committed.
-
-## Usage (after setting up both environments)
-
-From the Colab notebook, with the repository checked out at `/content` or otherwise added to Python's import path:
+Alternatively, in a fresh Colab T4 environment:
 
 ```python
-from ml.pipeline import generate_3d
-
-path = generate_3d(
-    "/content/chair.png",
-    "a single wooden chair, realistic product photo, full object visible",
-    "/content/outputs",
-)
-print(path)
+import subprocess
+subprocess.run(["git","clone","-b","sketch2shape-ai","https://github.com/arpit-thorat07/techzypher.git","/content/techzypher"],check=True)
+subprocess.run(["bash","/content/techzypher/setup/setup_colab.sh"],check=True)
+subprocess.run(["python","/content/techzypher/scripts/start_worker_colab.py"],check=True)
 ```
 
-For a colored input image with prompt guidance:
+The setup script installs two isolated Python 3.10 environments, downloads TripoSR from its official repository, installs its dependencies, applies a scikit-image marching-cubes fallback, and downloads the Cloudflare tunnel executable. The model weights download during the first inference.
 
-```python
-from ml.pipeline import generate_3d_from_image
+The launcher displays three values to give the backend developer **privately**:
 
-path = generate_3d_from_image(
-    "/content/controller.png",
-    "a pink gaming controller with purple buttons, rounded ergonomic body, studio lighting",
-    "/content/outputs",
-)
-print(path)
+```dotenv
+ML_WORKER_URL=https://your-temporary-tunnel.trycloudflare.com
+ML_WORKER_TOKEN=private-random-token
+ML_WORKER_TIMEOUT_SECONDS=900
 ```
 
-The returned path points to a job-specific `model.glb`. The sketch workflow saves `control.png` and `generated.png`; the colored-image workflow saves `conditioned.png`.
+These are placeholders, not actual credentials. Colab resets require restarting the worker and tunnel; URL and token may change.
 
-## Test observations and limitations
+## GPU worker HTTP contract
 
-A chair, stool, mug, and desk lamp were used during manual tests. GLB creation was successful, but successful mesh export is **not** proof of correct 3D reconstruction. Notably, the mug's hollow interior and lamp shade depth were not consistently preserved. TripoSR infers unseen geometry from one image, and prompts alone may not solve cavities and thin parts. Review each model in a 3D viewer. The exported GLB carries vertex colors (COLOR_0) with a supporting material, not a UV-baked texture image; some viewers may require material-preview mode. Prompt-guided img2img can change colors or proportions, and does not guarantee preservation of hidden geometry.
+See [gpu_worker/README.md](gpu_worker/README.md). Endpoints:
 
-## Model attribution
+- `GET /health` — readiness
+- `POST /jobs` — authenticated multipart `image`, `prompt`, `mode=sketch|color`; HTTP 202 with `job_id`
+- `GET /jobs/{job_id}` — authenticated job status
+- `GET /jobs/{job_id}/bundle` — authenticated ZIP containing `model.glb`, `preview.png`, `manifest.json`
 
-This project uses externally pretrained work, not models trained from scratch:
+The worker executes one GPU job at once; a second may wait in the queue. The backend stores returned GLB and preview bytes, and exposes its own frontend download endpoints. It must not expose Colab filesystem paths.
+
+Smoke-test a running worker with `scripts/test_worker.py` (requires `requests` and the active URL/token).
+
+## CPU-only tests
+
+```bash
+python -m pip install fastapi uvicorn python-multipart httpx pytest pillow numpy trimesh
+python -m pytest -q tests/test_gpu_worker.py tests/test_mesh_utils.py
+```
+
+These mock GPU inference and test authentication, validation, queueing, job responses, and colored GLB export. They do not verify the real Colab T4 inference.
+
+## Known quality limitations
+
+TripoSR works from one image and may close mug cavities or flatten lamp heads. It exports **vertex-colored GLB** rather than UV texture maps. `ml/mesh_utils.py` adds an explicit material for COLOR_0 primitives to support glTF viewers without changing the existing colors. Img2img may alter colors, structure, or proportions. The established TripoSR arguments remain `--foreground-ratio 0.95 --mc-resolution 192 --chunk-size 4096`.
+
+## Attribution
+
+Externally pretrained dependencies:
 - [Stable Diffusion v1.5](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5)
 - [ControlNet Scribble](https://huggingface.co/lllyasviel/control_v11p_sd15_scribble)
 - [TripoSR](https://github.com/VAST-AI-Research/TripoSR)
 
-Check each upstream model's licensing and terms before redistribution or deployment. Do not commit model weights or private tokens.
+Check the respective licenses and terms before redistributing model weights or commercial deployment.
