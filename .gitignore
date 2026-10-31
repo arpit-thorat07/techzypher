@@ -48,3 +48,6 @@ pnpm-debug.log*
 *.sw?
 .DS_Store
 Thumbs.db
+
+techzypher-sketch2shape-ai/worker_outputs/
+techzypher-sketch2shape-ai/outputs/

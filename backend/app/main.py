@@ -4,6 +4,7 @@ from fastapi.openapi.utils import get_openapi
 
 from app.core.config import settings
 from app.routes.generation import router as generation_router
+from app.services.worker_client import worker_client
 
 # Initialize storage directories on startup
 settings.init_directories()
@@ -80,9 +81,16 @@ async def root():
 
 @app.get(f"{settings.API_PREFIX}/health", tags=["Health"])
 async def health_check():
-    """Health check endpoint for status monitoring."""
+    """Health check endpoint for status monitoring and worker readiness."""
+    worker_status = await worker_client.health_check()
     return {
         "status": "healthy",
         "uploads_dir_exists": settings.UPLOADS_DIR.is_dir(),
         "outputs_dir_exists": settings.OUTPUTS_DIR.is_dir(),
+        "worker": {
+            "configured": worker_client.is_configured,
+            "reachable": worker_status.get("reachable", False),
+            "status": worker_status.get("status", "unconfigured"),
+            "is_busy": worker_status.get("is_busy", False),
+        },
     }

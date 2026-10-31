@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Set
+from typing import List, Set, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -25,6 +25,11 @@ class Settings(BaseSettings):
         "image/jpg",
         "image/webp",
     }
+
+    # Remote ML Worker Configuration (Google Colab GPU Worker)
+    ML_WORKER_URL: Optional[str] = None
+    ML_WORKER_TOKEN: Optional[str] = None
+    ML_WORKER_TIMEOUT_SECONDS: float = 300.0  # 5 minutes inference timeout
 
     # CORS configuration
     CORS_ORIGINS: List[str] = [

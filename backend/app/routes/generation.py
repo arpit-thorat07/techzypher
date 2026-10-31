@@ -8,6 +8,7 @@ from fastapi import (
     File,
     Form,
     Request,
+    BackgroundTasks,
     HTTPException,
     status,
 )
@@ -21,6 +22,7 @@ from app.schemas.generation import (
 )
 from app.services.image_service import ImageService
 from app.services.generation_service import generation_service
+from app.services.worker_client import worker_client
 
 router = APIRouter(prefix="", tags=["3D Generation"])
 
@@ -41,6 +43,7 @@ router = APIRouter(prefix="", tags=["3D Generation"])
 )
 async def generate_model(
     request: Request,
+    background_tasks: BackgroundTasks,
     file: UploadFile | None = File(None, description="Uploaded PNG, JPG, or WebP image"),
     image: str | None = Form(None, description="Base64 data URL from sketch canvas"),
     prompt: str | None = Form("", description="Optional text prompt for style/materials"),
@@ -53,6 +56,7 @@ async def generate_model(
     - Validate supported image formats (PNG, JPG, JPEG, WebP) and file size (≤ 25MB).
     - Save input image inside backend/uploads/.
     - Generate a unique job_id and return queued status.
+    - If remote ML worker is configured, automatically dispatch background inference.
     """
     job_id = str(uuid.uuid4())
     content_type = request.headers.get("content-type", "")
@@ -91,6 +95,16 @@ async def generate_model(
         prompt=prompt,
         metadata={**metadata, "mode": mode},
     )
+
+    # If remote ML worker is configured, dispatch background inference job
+    if worker_client.is_configured:
+        background_tasks.add_task(
+            generation_service.process_job_with_worker,
+            job_id=job_id,
+            input_path=saved_path,
+            prompt=prompt or "",
+            mode=mode or "draw",
+        )
 
     return GenerateResponse(
         job_id=job_id,
