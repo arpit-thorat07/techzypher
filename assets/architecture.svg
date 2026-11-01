@@ -1,0 +1,328 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 840" width="100%" height="100%" style="background:#090d16; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Background Grid -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#131b2e" stroke-width="1" />
+    </pattern>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#06b6d4" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#8b5cf6" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#f59e0b" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#10b981" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Gradients -->
+    <linearGradient id="grad-header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+
+    <!-- Card Gradients -->
+    <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e2238"/>
+      <stop offset="100%" stop-color="#081424"/>
+    </linearGradient>
+    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e153b"/>
+      <stop offset="100%" stop-color="#110d24"/>
+    </linearGradient>
+    <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d1230"/>
+      <stop offset="100%" stop-color="#17091a"/>
+    </linearGradient>
+    <linearGradient id="grad-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a1d0d"/>
+      <stop offset="100%" stop-color="#170f07"/>
+    </linearGradient>
+    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d291e"/>
+      <stop offset="100%" stop-color="#071711"/>
+    </linearGradient>
+    <linearGradient id="grad-bottom" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e1e38"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Connector Markers -->
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#06b6d4"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrow-pink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#ec4899"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="100%" height="100%" fill="#090d16" />
+  <rect width="100%" height="100%" fill="url(#grid)" opacity="0.75" />
+
+  <!-- Ambient Glow Blobs -->
+  <circle cx="200" cy="240" r="160" fill="#0284c7" opacity="0.08" filter="blur(60px)"/>
+  <circle cx="600" cy="380" r="200" fill="#7c3aed" opacity="0.08" filter="blur(70px)"/>
+  <circle cx="1020" cy="360" r="180" fill="#059669" opacity="0.08" filter="blur(60px)"/>
+
+  <!-- ================= TOP HEADER BANNER ================= -->
+  <g transform="translate(40, 28)">
+    <text x="0" y="24" fill="#94a3b8" font-size="12" font-weight="700" letter-spacing="2">SYSTEM ARCHITECTURE SPECIFICATION</text>
+    <text x="0" y="52" fill="url(#grad-header)" font-size="28" font-weight="900" letter-spacing="-0.5">Sketch2Shape AI — Multimodal 2D-to-3D Synthesis Engine</text>
+    <text x="0" y="74" fill="#64748b" font-size="13">Dual-Pathway Conditioning • Automated Silhouette Anchoring • Triplane NeRF Reconstruction • glTF PBR Repair</text>
+  </g>
+
+  <!-- ================= STAGE BADGE TABS ================= -->
+  <!-- Stage 1 -->
+  <g transform="translate(40, 115)">
+    <rect width="210" height="28" rx="6" fill="#0f172a" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="105" y="18" fill="#38bdf8" font-size="11" font-weight="700" text-anchor="middle">STAGE 1: MULTIMODAL INGEST</text>
+  </g>
+  <!-- Stage 2 -->
+  <g transform="translate(280, 115)">
+    <rect width="210" height="28" rx="6" fill="#0f172a" stroke="#6366f1" stroke-width="1.2"/>
+    <text x="105" y="18" fill="#818cf8" font-size="11" font-weight="700" text-anchor="middle">STAGE 2: PREPROCESSING</text>
+  </g>
+  <!-- Stage 3 -->
+  <g transform="translate(520, 115)">
+    <rect width="210" height="28" rx="6" fill="#0f172a" stroke="#c026d3" stroke-width="1.2"/>
+    <text x="105" y="18" fill="#e879f9" font-size="11" font-weight="700" text-anchor="middle">STAGE 3: 2D SYNTHESIS</text>
+  </g>
+  <!-- Stage 4 -->
+  <g transform="translate(760, 115)">
+    <rect width="210" height="28" rx="6" fill="#0f172a" stroke="#d97706" stroke-width="1.2"/>
+    <text x="105" y="18" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">STAGE 4: 3D RECONSTRUCTION</text>
+  </g>
+  <!-- Stage 5 -->
+  <g transform="translate(1000, 115)">
+    <rect width="200" height="28" rx="6" fill="#0f172a" stroke="#059669" stroke-width="1.2"/>
+    <text x="100" y="18" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">STAGE 5: MESH EXPORT</text>
+  </g>
+
+  <!-- ================= PATHWAY A: SKETCH-TO-3D (TOP) ================= -->
+
+  <!-- Card A1: Hand-Drawn Sketch -->
+  <g transform="translate(40, 160)" filter="url(#shadow)">
+    <rect width="210" height="150" rx="12" fill="url(#grad-cyan)" stroke="#0284c7" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#0369a1" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">✏️</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">Hand-Drawn Sketch</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5" line-height="16">
+      <tspan x="14" dy="0">• Napkin doodles, stylus sketches</tspan>
+      <tspan x="14" dy="18">• Arbitrary dark-on-light lines</tspan>
+      <tspan x="14" dy="18">• Dynamic scale &amp; orientation</tspan>
+    </text>
+    <rect x="14" y="112" width="70" height="20" rx="4" fill="#0369a1" fill-opacity="0.3" stroke="#38bdf8" stroke-width="0.8"/>
+    <text x="49" y="126" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">PNG / JPG</text>
+  </g>
+
+  <!-- Connector A1 -> A2 -->
+  <path d="M 250 235 L 280 235" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+
+  <!-- Card A2: Sketch Normalization -->
+  <g transform="translate(280, 160)" filter="url(#shadow)">
+    <rect width="210" height="150" rx="12" fill="url(#grad-purple)" stroke="#6366f1" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#4338ca" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">📐</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">Sketch Normalizer</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• Autocontrast stroke detection</tspan>
+      <tspan x="14" dy="18">• Aspect-ratio bbox cropping</tspan>
+      <tspan x="14" dy="18">• Canvas padding &amp; centering</tspan>
+    </text>
+    <rect x="14" y="112" width="115" height="20" rx="4" fill="#4338ca" fill-opacity="0.3" stroke="#818cf8" stroke-width="0.8"/>
+    <text x="71" y="126" fill="#818cf8" font-size="10" font-weight="700" text-anchor="middle">512×512 Control Map</text>
+  </g>
+
+  <!-- Connector A2 -> A3 -->
+  <path d="M 490 235 L 520 235" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Card A3: ControlNet Scribble -->
+  <g transform="translate(520, 160)" filter="url(#shadow)">
+    <rect width="210" height="150" rx="12" fill="url(#grad-pink)" stroke="#c026d3" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#701a75" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">🎨</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">ControlNet Scribble</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• SD 1.5 + Scribble v11p</tspan>
+      <tspan x="14" dy="18">• Text Prompt Guidance (CFG: 7)</tspan>
+      <tspan x="14" dy="18">• UniPC Multi-step Scheduler</tspan>
+    </text>
+    <rect x="14" y="112" width="125" height="20" rx="4" fill="#701a75" fill-opacity="0.3" stroke="#e879f9" stroke-width="0.8"/>
+    <text x="76" y="126" fill="#e879f9" font-size="10" font-weight="700" text-anchor="middle">Photorealistic 2D View</text>
+  </g>
+
+  <!-- ================= PATHWAY B: PHOTO + PROMPT (BOTTOM) ================= -->
+
+  <!-- Card B1: 2D Photo & Prompt -->
+  <g transform="translate(40, 345)" filter="url(#shadow)">
+    <rect width="210" height="165" rx="12" fill="url(#grad-cyan)" stroke="#0284c7" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#0369a1" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">📷</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">2D Photo + Prompt</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• Real photo / Product render</tspan>
+      <tspan x="14" dy="18">• Optional Style Prompt</tspan>
+      <tspan x="14" dy="18">• e.g. "obsidian black shell"</tspan>
+    </text>
+    <rect x="14" y="125" width="130" height="22" rx="4" fill="#0369a1" fill-opacity="0.3" stroke="#38bdf8" stroke-width="0.8"/>
+    <text x="79" y="140" fill="#38bdf8" font-size="10.5" font-weight="700" text-anchor="middle">Image + Optional Text</text>
+  </g>
+
+  <!-- Connector B1 -> B2 -->
+  <path d="M 250 425 L 280 425" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+
+  <!-- Card B2: Silhouette Anchor Extractor -->
+  <g transform="translate(280, 345)" filter="url(#shadow)">
+    <rect width="210" height="165" rx="12" fill="url(#grad-purple)" stroke="#6366f1" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#4338ca" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">🛡️</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">Silhouette Anchor</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• High-contrast mask extraction</tspan>
+      <tspan x="14" dy="18">• Motion-blur term sanitizer</tspan>
+      <tspan x="14" dy="18">• Locks limb &amp; head geometry</tspan>
+    </text>
+    <rect x="14" y="125" width="145" height="22" rx="4" fill="#4338ca" fill-opacity="0.3" stroke="#818cf8" stroke-width="0.8"/>
+    <text x="86" y="140" fill="#818cf8" font-size="10.5" font-weight="700" text-anchor="middle">Locked Binary Mask [L]</text>
+  </g>
+
+  <!-- Connector B2 -> B3 -->
+  <path d="M 490 425 L 520 425" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Card B3: Mask-Locked Img2Img -->
+  <g transform="translate(520, 345)" filter="url(#shadow)">
+    <rect width="210" height="165" rx="12" fill="url(#grad-pink)" stroke="#c026d3" stroke-width="1.5"/>
+    <rect x="14" y="14" width="32" height="32" rx="8" fill="#701a75" fill-opacity="0.4"/>
+    <text x="30" y="35" font-size="18" text-anchor="middle">✨</text>
+    <text x="56" y="34" fill="#f8fafc" font-size="15" font-weight="700">Mask-Locked Img2Img</text>
+    <text x="14" y="66" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• Calibrated strength (0.40)</tspan>
+      <tspan x="14" dy="18">• Re-compositing on pure white</tspan>
+      <tspan x="14" dy="18">• Zero floor shadows or haze</tspan>
+    </text>
+    <rect x="14" y="125" width="140" height="22" rx="4" fill="#701a75" fill-opacity="0.3" stroke="#e879f9" stroke-width="0.8"/>
+    <text x="84" y="140" fill="#e879f9" font-size="10.5" font-weight="700" text-anchor="middle">Clean Alpha Anchor [RGB]</text>
+  </g>
+
+  <!-- ================= CONVERGENCE TO TRIPOSR (STAGE 4) ================= -->
+  <!-- Convergence Connector from A3 -->
+  <path d="M 730 235 L 745 235 Q 755 235 755 285 L 755 315 L 760 315" stroke="#ec4899" stroke-width="2" marker-end="url(#arrow-pink)"/>
+  <!-- Convergence Connector from B3 -->
+  <path d="M 730 425 L 745 425 Q 755 425 755 375 L 755 345 L 760 345" stroke="#ec4899" stroke-width="2" marker-end="url(#arrow-pink)"/>
+
+  <!-- Card 4: TripoSR 3D Neural Reconstruction -->
+  <g transform="translate(760, 230)" filter="url(#shadow)">
+    <rect width="210" height="210" rx="14" fill="url(#grad-amber)" stroke="#d97706" stroke-width="2"/>
+    <rect x="14" y="14" width="34" height="34" rx="8" fill="#b45309" fill-opacity="0.4"/>
+    <text x="31" y="37" font-size="20" text-anchor="middle">🧊</text>
+    <text x="58" y="36" fill="#f8fafc" font-size="16" font-weight="800">TripoSR Engine</text>
+    <text x="14" y="70" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• BiRefNet Alpha Segmentation</tspan>
+      <tspan x="14" dy="18">• Foreground scaling (0.95 ratio)</tspan>
+      <tspan x="14" dy="18">• Vision Transformer (ViT-L/14)</tspan>
+      <tspan x="14" dy="18">• Triplane NeRF Density Field</tspan>
+      <tspan x="14" dy="18">• CPU Marching Cubes (res=192)</tspan>
+    </text>
+    <rect x="14" y="170" width="160" height="24" rx="4" fill="#b45309" fill-opacity="0.3" stroke="#fbbf24" stroke-width="1"/>
+    <text x="94" y="186" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">Raw Vertex-Colored Mesh</text>
+  </g>
+
+  <!-- Connector Stage 4 -> Stage 5 -->
+  <path d="M 970 335 L 1000 335" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)"/>
+
+  <!-- Card 5: Mesh Repair & GLB Export -->
+  <g transform="translate(1000, 215)" filter="url(#shadow)">
+    <rect width="200" height="240" rx="14" fill="url(#grad-green)" stroke="#059669" stroke-width="2"/>
+    <rect x="14" y="14" width="34" height="34" rx="8" fill="#047857" fill-opacity="0.4"/>
+    <text x="31" y="37" font-size="20" text-anchor="middle">📦</text>
+    <text x="58" y="36" fill="#f8fafc" font-size="16" font-weight="800">Mesh Polish</text>
+    <text x="14" y="70" fill="#94a3b8" font-size="11.5">
+      <tspan x="14" dy="0">• Trimesh Topology Check</tspan>
+      <tspan x="14" dy="18">• Manifold Watertight Test</tspan>
+      <tspan x="14" dy="18">• Inverted Normal Auto-Fix</tspan>
+      <tspan x="14" dy="18">• Binary glTF Chunk Parser</tspan>
+      <tspan x="14" dy="18">• PBR COLOR_0 Material</tspan>
+    </text>
+    <!-- Output Box -->
+    <rect x="12" y="175" width="176" height="50" rx="8" fill="#047857" fill-opacity="0.3" stroke="#34d399" stroke-width="1.5" filter="url(#glow-green)"/>
+    <text x="100" y="196" fill="#a7f3d0" font-size="13" font-weight="800" text-anchor="middle">model.glb</text>
+    <text x="100" y="214" fill="#6ee7b7" font-size="10.5" font-weight="600" text-anchor="middle">Universal 3D Asset (~55s)</text>
+  </g>
+
+  <!-- ================= BOTTOM PANEL: MICROSERVICE INFRASTRUCTURE ================= -->
+  <g transform="translate(40, 545)" filter="url(#shadow)">
+    <rect width="1160" height="155" rx="14" fill="url(#grad-bottom)" stroke="#334155" stroke-width="1.5"/>
+    
+    <!-- Microservice Header -->
+    <rect x="20" y="16" width="32" height="32" rx="8" fill="#1e293b"/>
+    <text x="36" y="37" font-size="18" text-anchor="middle">⚡</text>
+    <text x="62" y="37" fill="#f8fafc" font-size="16" font-weight="800">Production Microservice &amp; Deployment Topology</text>
+    <text x="460" y="37" fill="#64748b" font-size="12">Decoupled Asynchronous Queue Architecture on Google Colab T4</text>
+
+    <!-- Sub-Block 1: Client / Web App -->
+    <g transform="translate(20, 60)">
+      <rect width="210" height="75" rx="8" fill="#0b1120" stroke="#1e293b" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#38bdf8" font-size="13" font-weight="700">1. Client / Frontend</text>
+      <text x="16" y="46" fill="#94a3b8" font-size="11">Multipart Upload: PNG/JPG</text>
+      <text x="16" y="62" fill="#64748b" font-size="10.5">X-ML-Worker-Token Auth</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <path d="M 230 98 L 260 98" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+
+    <!-- Sub-Block 2: Cloudflare Tunnel -->
+    <g transform="translate(260, 60)">
+      <rect width="220" height="75" rx="8" fill="#0b1120" stroke="#f97316" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#fb923c" font-size="13" font-weight="700">2. Cloudflare Quick Tunnel</text>
+      <text x="16" y="46" fill="#94a3b8" font-size="11">HTTPS Edge Proxy</text>
+      <text x="16" y="62" fill="#64748b" font-size="10.5">Zero Port Forwarding Needed</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <path d="M 480 98 L 510 98" stroke="#fb923c" stroke-width="2" marker-end="url(#arrow-amber)"/>
+
+    <!-- Sub-Block 3: FastAPI Worker -->
+    <g transform="translate(510, 60)">
+      <rect width="280" height="75" rx="8" fill="#0b1120" stroke="#009688" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#2dd4bf" font-size="13" font-weight="700">3. FastAPI Queue Worker</text>
+      <text x="16" y="46" fill="#94a3b8" font-size="11">ThreadPoolExecutor (max_workers=1)</text>
+      <text x="16" y="62" fill="#64748b" font-size="10.5">HMAC Security • 429 Backpressure</text>
+    </g>
+
+    <!-- Arrow 3 -> 4 -->
+    <path d="M 790 98 L 820 98" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+
+    <!-- Sub-Block 4: Dual VEnv Runtime -->
+    <g transform="translate(820, 60)">
+      <rect width="320" height="75" rx="8" fill="#0b1120" stroke="#8b5cf6" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#c084fc" font-size="13" font-weight="700">4. Dual VEnv GPU Engine</text>
+      <text x="16" y="46" fill="#94a3b8" font-size="11">controlnet-env ➔ triposr-env</text>
+      <text x="16" y="62" fill="#34d399" font-size="10.5" font-weight="600">Peak VRAM: 9.8 GB on Colab T4</text>
+    </g>
+  </g>
+
+  <!-- ================= FOOTER META ================= -->
+  <g transform="translate(40, 720)">
+    <text x="0" y="95" fill="#475569" font-size="11">TechZephyr 4.0 Hackathon Submission • End-to-End Latency: ~55-60s (Pure GPU Compute: ~14.4s) • Tested on NVIDIA Tesla T4</text>
+    <text x="1160" y="95" fill="#475569" font-size="11" text-anchor="end">Architecture v2.2 • Production Tested</text>
+  </g>
+</svg>

@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="100%" height="380">
+  <defs>
+    <linearGradient id="bannerBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#141e33" />
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9" />
+    </linearGradient>
+
+    <linearGradient id="accentCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <linearGradient id="accentPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+
+    <linearGradient id="accentGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <style>
+      .card-title {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 1px;
+      }
+      .card-sub {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        fill: #94a3b8;
+      }
+      .metric-badge {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+      }
+      .arrow-text {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 600;
+        font-size: 11px;
+        fill: #38bdf8;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="380" rx="16" fill="url(#bannerBg)" stroke="#334155" stroke-width="1.2" />
+
+  <!-- Flow Header Banner -->
+  <g transform="translate(60, 35)">
+    <rect x="0" y="0" width="1080" height="36" rx="8" fill="#1e293b" stroke="#475569" stroke-width="0.8" />
+    <text x="24" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="13px" fill="#e2e8f0" letter-spacing="1px">
+      MULTIMODAL SYNTHESIS PIPELINE: FROM 2D NAPKIN SKETCH TO PRODUCTION 3D ASSET
+    </text>
+    <text x="960" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="12px" fill="#38bdf8">
+      ⏱️ ~60 SECONDS
+    </text>
+  </g>
+
+  <!-- STAGE 1: 2D INPUT SKETCH -->
+  <g transform="translate(60, 95)" filter="url(#cardShadow)">
+    <rect width="280" height="245" rx="12" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5" />
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="280" height="42" rx="12" fill="#0f172a" />
+    <circle cx="24" cy="21" r="5" fill="#38bdf8" />
+    <text x="38" y="26" class="card-title" fill="#38bdf8">STAGE 1: INPUT SKETCH</text>
+
+    <!-- Canvas Preview Box -->
+    <g transform="translate(25, 55)">
+      <rect width="230" height="130" rx="8" fill="#090d16" stroke="#334155" stroke-width="1" />
+      
+      <!-- Conceptual Hand-drawn Chair / Object Doodle -->
+      <path d="M 50 140 L 70 70 L 160 70 L 180 140" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" />
+      <path d="M 65 95 L 165 95" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M 75 95 L 75 40 Q 115 35 155 40 L 155 95" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+      <path d="M 85 140 L 95 100 M 145 140 L 135 100" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+      <circle cx="115" cy="65" r="18" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2" />
+
+      <!-- Label inside box -->
+      <text x="15" y="24" class="metric-badge" fill="#64748b">INPUT: NAPKIN DOODLE</text>
+    </g>
+
+    <!-- Subtext -->
+    <text x="25" y="208" class="card-sub">Autocontrast • 512×512 Normalized</text>
+    <text x="25" y="226" class="card-sub">Binary Scribble Edge Inversion</text>
+  </g>
+
+  <!-- ARROW 1: Diffusion Conditioning -->
+  <g transform="translate(355, 185)">
+    <line x1="0" y1="0" x2="60" y2="0" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4 3" />
+    <polygon points="65,0 55,-6 55,6" fill="#38bdf8" />
+    <text x="32" y="-14" text-anchor="middle" class="arrow-text">ControlNet</text>
+    <text x="32" y="22" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#94a3b8">20 Steps UniPC</text>
+  </g>
+
+  <!-- STAGE 2: 2D PHOTOREALISTIC SYNTHESIS -->
+  <g transform="translate(435, 95)" filter="url(#cardShadow)">
+    <rect width="295" height="245" rx="12" fill="url(#cardGrad)" stroke="#c084fc" stroke-width="1.5" />
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="295" height="42" rx="12" fill="#0f172a" />
+    <circle cx="24" cy="21" r="5" fill="#c084fc" />
+    <text x="38" y="26" class="card-title" fill="#c084fc">STAGE 2: 2D SYNTHESIS</text>
+
+    <!-- Canvas Preview Box -->
+    <g transform="translate(25, 55)">
+      <rect width="245" height="130" rx="8" fill="#1e1b4b" stroke="#4338ca" stroke-width="1" />
+      
+      <!-- Styled Shaded Chair Visual -->
+      <!-- Backrest Shaded -->
+      <path d="M 85 95 L 85 45 Q 122 38 160 45 L 160 95 Z" fill="url(#accentPurple)" opacity="0.85" />
+      <!-- Seat Cushion -->
+      <polygon points="65,95 180,95 160,115 85,115" fill="#a855f7" />
+      <!-- Legs Shaded -->
+      <line x1="72" y1="115" x2="60" y2="140" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round" />
+      <line x1="172" y1="115" x2="185" y2="140" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round" />
+      <line x1="90" y1="115" x2="85" y2="135" stroke="#94a3b8" stroke-width="2.5" />
+      <line x1="155" y1="115" x2="160" y2="135" stroke="#94a3b8" stroke-width="2.5" />
+
+      <!-- Prompt text overlay -->
+      <rect x="10" y="10" width="160" height="20" rx="4" fill="#0f172a" opacity="0.85" />
+      <text x="18" y="24" font-family="sans-serif" font-weight="600" font-size="10px" fill="#e9d5ff">✨ "ergonomic oak chair"</text>
+    </g>
+
+    <!-- Subtext -->
+    <text x="25" y="208" class="card-sub">Stable Diffusion 1.5 + Scribble</text>
+    <text x="25" y="226" class="card-sub">Alpha Matting (BiRefNet / Rembg)</text>
+  </g>
+
+  <!-- ARROW 2: Triplane Reconstruction -->
+  <g transform="translate(745, 185)">
+    <line x1="0" y1="0" x2="60" y2="0" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="4 3" />
+    <polygon points="65,0 55,-6 55,6" fill="#c084fc" />
+    <text x="32" y="-14" text-anchor="middle" font-family="sans-serif" font-weight="600" font-size="11px" fill="#c084fc">TripoSR</text>
+    <text x="32" y="22" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#94a3b8">Marching Cubes</text>
+  </g>
+
+  <!-- STAGE 3: 3D WATERTIGHT MESH -->
+  <g transform="translate(825, 95)" filter="url(#cardShadow)">
+    <rect width="315" height="245" rx="12" fill="url(#cardGrad)" stroke="#34d399" stroke-width="1.5" />
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="315" height="42" rx="12" fill="#0f172a" />
+    <circle cx="24" cy="21" r="5" fill="#34d399" />
+    <text x="38" y="26" class="card-title" fill="#34d399">STAGE 3: 3D PRODUCTION MESH</text>
+
+    <!-- 3D Viewport Box -->
+    <g transform="translate(25, 55)">
+      <rect width="265" height="130" rx="8" fill="#064e3b" fill-opacity="0.25" stroke="#059669" stroke-width="1" />
+      
+      <!-- 3D Model Wireframe/Render representation -->
+      <g transform="translate(132, 65)">
+        <!-- Turntable Ring -->
+        <ellipse cx="0" cy="45" rx="65" ry="16" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4 3" />
+        
+        <!-- 3D Geometric Facets -->
+        <polygon points="0,-45 42,-20 0,5 -42,-20" fill="#34d399" fill-opacity="0.3" stroke="#34d399" stroke-width="1.5" />
+        <polygon points="-42,-20 0,5 0,45 -42,20" fill="#10b981" fill-opacity="0.5" stroke="#34d399" stroke-width="1.5" />
+        <polygon points="0,5 42,-20 42,20 0,45" fill="#059669" fill-opacity="0.6" stroke="#34d399" stroke-width="1.5" />
+        
+        <!-- Vertex Points -->
+        <circle cx="0" cy="-45" r="3" fill="#6ee7b7" />
+        <circle cx="42" cy="-20" r="3" fill="#6ee7b7" />
+        <circle cx="-42" cy="-20" r="3" fill="#6ee7b7" />
+        <circle cx="0" cy="45" r="3" fill="#6ee7b7" />
+        <circle cx="0" cy="5" r="3" fill="#ffffff" />
+      </g>
+
+      <!-- Badge inside -->
+      <rect x="10" y="10" width="130" height="20" rx="4" fill="#064e3b" />
+      <text x="18" y="24" font-family="sans-serif" font-weight="700" font-size="10px" fill="#6ee7b7">📦 .GLB + .OBJ READY</text>
+    </g>
+
+    <!-- Subtext -->
+    <text x="25" y="208" class="card-sub">Watertight Triangulation • Normal Repair</text>
+    <text x="25" y="226" class="card-sub">PBR COLOR_0 Vertex Color Material Injected</text>
+  </g>
+</svg>
