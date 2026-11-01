@@ -8,7 +8,7 @@
 <br/><br/>
 
 <!-- 2. BADGE ROWS -->
-[![Hackathon](https://img.shields.io/badge/Hackathon-TechZephyr%204.0%20(12H)-7928CA?style=for-the-badge&logo=target&logoColor=white)](https://github.com/arpit-thorat07/techzypher)
+[![Hackathon](https://img.shields.io/badge/Hackathon-TechZephyr%204.0%20(24H)-7928CA?style=for-the-badge&logo=target&logoColor=white)](https://github.com/arpit-thorat07/techzypher)
 [![Python 3.10](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch 2.1](https://img.shields.io/badge/PyTorch-2.1.2%2Bcu121-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Diffusers](https://img.shields.io/badge/Diffusers-0.27.2-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://github.com/huggingface/diffusers)
