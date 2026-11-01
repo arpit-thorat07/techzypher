@@ -55,7 +55,7 @@ From raw unconstrained stylus/pen contour lines $\rightarrow$ photorealistic 2D 
 
 > 📹 **Live Demonstration Video Walkthrough:**
 > 
-> [![Watch Demo on Google Drive](https://img.shields.io/badge/Google%20Drive-Watch%20Demo-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](PASTE_GOOGLE_DRIVE_VIDEO_URL_HERE)
+> [![Watch Demo on Google Drive](https://img.shields.io/badge/Google%20Drive-Watch%20Demo-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1MqCY27T6da8FUrbqiDpqVTMyze-kxmoX/view)
 
 </div>
 
