@@ -499,7 +499,6 @@ We proudly acknowledge and credit the foundational open-source research and mode
 * **[TripoSR](https://github.com/VAST-AI-Research/TripoSR):** Fast 3D feedforward reconstruction model developed by VAST AI Research & Stability AI. Released under the **MIT License**.
 * **[ControlNet](https://github.com/lllyasviel/ControlNet):** Adding Conditional Control to Text-to-Image Diffusion Models by Lvmin Zhang & Maneesh Agrawala. Released under the **Apache License 2.0**.
 * **[Stable Diffusion v1.5](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5):** Text-to-image latent diffusion model by RunwayML and Stability AI. Released under the **CreativeML Open RAIL-M License**.
-* **[linoyts/sketch-to-3d](https://huggingface.co/spaces/linoyts/sketch-to-3d):** Hugging Face Space providing architectural inspiration for sketch-guided 3D pipelines.
 * **[Rembg](https://github.com/danielgatis/rembg):** Background removal tool powered by BiRefNet / u2net. Released under the **MIT License**.
 * **[Trimesh](https://trimsh.org/):** Pure Python library for loading and using triangular meshes. Released under the **MIT License**.
 * **[FastAPI](https://fastapi.tiangolo.com/):** High performance web framework by Sebastián Ramírez. Released under the **MIT License**.
